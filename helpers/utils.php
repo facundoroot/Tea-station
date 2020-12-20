@@ -1,0 +1,81 @@
+<?php
+
+class Utils
+{
+
+    public static function deleteSession($name)
+    {
+        // con el unset borro una variable de una sesion
+        if (isset($_SESSION[$name])) {
+            $_SESSION[$name] = null;
+            unset($_SESSION[$name]);
+        }
+
+        return $name;
+    }
+
+    public static function isAdmin()
+    {
+        if (!isset($_SESSION['admin'])) {
+            header('Location:' . base_url);
+        } else {
+            return true;
+        }
+    }
+
+    public static function isIdentity()
+    {
+        if (!isset($_SESSION['identity'])) {
+            header('Location:' . base_url);
+        } else {
+            return true;
+        }
+    }
+
+    public static function showCategorias()
+    {
+        require_once 'models/categoria.php';
+        $categoria = new Categoria();
+        // o sea muestra todas las categorias
+        $categorias = $categoria->getAll();
+        return $categorias;
+
+    }
+
+    public static function statsCarrito()
+    {
+        $stats = array(
+            'count' => 0,
+            'total' => 0,
+        );
+
+        if (isset($_SESSION['carrito'])) {
+            $stats['count'] = count($_SESSION['carrito']);
+
+            foreach ($_SESSION['carrito'] as $producto) {
+                $stats['total'] += $producto['precio'] * $producto['unidades'];
+            }
+        }
+
+        return $stats;
+    }
+
+    public static function showStatus($status)
+    {$value = 'pending';
+        if ($status == 'confirm') {
+            $value = 'pending';
+
+        } elseif ($status == 'preparation') {
+            $value = 'In preparation';
+
+        } elseif ($status == 'ready') {
+            $value = 'Ready';
+
+        } elseif ($status == 'sended') {
+            $value = 'sent';
+
+        }
+
+        return $value;
+    }
+}

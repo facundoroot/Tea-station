@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+# Activar rewrite
+RewriteEngine on
+ErrorDocument 404 http://localhost/Tienda/error/index
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+
+RewriteRule ^(.*)/(.*) index.php?controller=$1&action=$2
+</IfModule>
+
+#el unico problema con esto es que desconfigura el css, eso lo arreglamos con base_url 
+#la constante que armamos, vamos a agregarle eso al principio de todos los links 
+#en vistas/layout 
+#en nuestro caso solo tenemos en el header la imagen de la remera y el link al stylesheet asi que en ambos casos agregamos el base_ulr y listo 
+#en conclusion ahora en vez de tener en el link http: //localhost/Tienda/?controller=UsuarioController&action=registro
+#ahora tengo http: //localhost/Tienda/UsuarioController/registro
+#mucho mas prolijo
